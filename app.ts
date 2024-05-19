@@ -7,6 +7,7 @@ import helmet from 'helmet'
 
 import { errorHandler } from './src/utils/errorHandler.js'
 import { logger } from './src/utils/logger.js'
+import router from './router.js'
 
 const service = JSON.parse(readFileSync('./package.json', 'utf8'))
 
@@ -20,6 +21,8 @@ app.use(cors())
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(pino({ logger }))
+
+app.use(router)
 
 app.use(errorHandler)
 
