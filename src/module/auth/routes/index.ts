@@ -1,0 +1,1 @@
+// impliment router varification and export the router for the auth module

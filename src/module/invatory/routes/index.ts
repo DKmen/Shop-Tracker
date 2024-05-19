@@ -1,0 +1,1 @@
+// export invatory router for invatory module

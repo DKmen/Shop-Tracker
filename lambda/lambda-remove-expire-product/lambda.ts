@@ -1,0 +1,1 @@
+// remove expire product and this lambda function trigger by event bridge

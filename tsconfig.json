@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "@tsconfig/strictest/tsconfig.json",
+    "@tsconfig/node20/tsconfig.json"
+  ],
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "incremental": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "exactOptionalPropertyTypes": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node16"
+  },
+  "include": [
+    "src",
+    "config",
+    "migrations",
+    "seeds",
+    "*.js",
+    "*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "ts-node": {
+    "esm": true
+  }
+}
