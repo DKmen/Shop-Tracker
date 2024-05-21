@@ -15,33 +15,37 @@ if (JWT_SECRET === undefined) {
 
 // impliment middleware for authencation
 export const auth = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
-    // get access token from request headers and remove Bearer from token.
-    const accessToken = getAccessToken(req)
-    logger.info('Auth middleware request received')
-    logger.debug({ accessToken })
+    try {
+        // get access token from request headers and remove Bearer from token.
+        const accessToken = getAccessToken(req)
+        logger.info('Auth middleware request received')
+        logger.debug({ accessToken })
 
-    // verify jwt token
-    const tokenPayload = jwt.verify(accessToken, JWT_SECRET) as JwtPayload
-    logger.info('Token verified successfully')
-    logger.debug({ tokenPayload })
+        // verify jwt token
+        const tokenPayload = jwt.verify(accessToken, JWT_SECRET) as JwtPayload
+        logger.info('Token verified successfully')
+        logger.debug({ tokenPayload })
 
-    const user = tokenPayload?.['user']
-    if (user === undefined) {
-        throw new ResourcesNotFoundError(['user'])
+        const user = tokenPayload?.['user']
+        if (user === undefined) {
+            throw new ResourcesNotFoundError(['user'])
+        }
+        logger.info('User found in token')
+        logger.debug({ user })
+
+        //check user is exist or not
+        const userExist = await UserRO.query().findOne({ id: user.id });
+        if (userExist === undefined) {
+            throw new ResourcesNotFoundError(['user'])
+        }
+
+        //store user data in request object
+        req.context = { user }
+        logger.info('User data stored in request object')
+        logger.info('Auth middleware request completed')
+
+        next();
+    } catch (error) {
+        next(error)
     }
-    logger.info('User found in token')
-    logger.debug({ user })
-
-    //check user is exist or not
-    const userExist = await UserRO.query().findOne({ email: user.id });
-    if (userExist === undefined) {
-        throw new ResourcesNotFoundError(['user'])
-    }
-
-    //store user data in request object
-    req.context = { user }
-    logger.info('User data stored in request object')
-    logger.info('Auth middleware request completed')
-
-    next();
 }
