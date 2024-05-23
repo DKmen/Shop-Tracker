@@ -5,23 +5,35 @@ import { BaseError, ResourcesNotFoundError } from '../../../errors';
 
 interface ShopUpdateRequestBody {
     name: string;
+    address: string;
+    phone: string;
+    email: string;
+    description: string;
 }
 
-interface ShopUpdateRequestParams {
-    id: string;
-}
-
-const updateShop = async (req: Request<ShopUpdateRequestParams, ShopUpdateRequestBody>, res: Response) => {
-    const { name: shopName } = req.body;
-    const { id: shopId } = req.params;
+const updateShop = async (req: Request<unknown, unknown, ShopUpdateRequestBody>, res: Response) => {
+    const { name: shopName, address: shopAddress, phone: shopPhone, email: shopEmail, description: shopDescription } = req.body;
     const { id: userId } = req?.context?.user ?? {};
+    const { id: shopId } = req?.context?.shop ?? {};
 
     logger.info('Update Shop Controller is started');
-    logger.debug({ shopName, userId, shopId });
+    logger.debug({ shopName, userId, shopAddress, shopPhone, shopEmail, shopDescription, shopId });
 
     const trx = await ShopRW.startTransaction();
+    logger.info('Transaction started successfully');
 
     try {
+        // check shopId and userId is defined
+        if(shopId === undefined){
+            throw new ResourcesNotFoundError(['shopId']);
+        }
+        logger.info('ShopId is defined');
+
+        if(userId === undefined){
+            throw new ResourcesNotFoundError(['userId']);
+        }
+        logger.info('UserId is defined');
+
         // find shop
         const shop = await ShopRO.query(trx).findOne({ id: shopId, user_id: userId });
         logger.debug({ shop });
@@ -33,7 +45,7 @@ const updateShop = async (req: Request<ShopUpdateRequestParams, ShopUpdateReques
         logger.debug({ shop });
 
         // update shop
-        const updatedShop = await shop.$query(trx).updateAndFetch({ shopName });
+        const updatedShop = await shop.$query(trx).updateAndFetch({ shopName , shopAddress, shopPhone, shopEmail, shopDescription});
         await trx.commit();
 
         logger.debug('Transaction commited successfully');
