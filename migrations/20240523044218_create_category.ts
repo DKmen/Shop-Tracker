@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     if (!hasTable) {
         await knex.schema.createTable('category', (table) => {
             table.uuid('id').primary().defaultTo(knex.fn.uuid())
+            table.uuid('shop_id').notNullable().references('id').inTable('shop')
             table.string('category_name').notNullable()
             table.string('description').nullable()
             table.timestamp('created_at').defaultTo(knex.fn.now())
