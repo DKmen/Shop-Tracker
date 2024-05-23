@@ -12,6 +12,7 @@ class Category extends Model {
     id!: string
     categoryName!: string
     description!: string
+    shopId!: string
     createdAt!: string
     updatedAt!: string
 
