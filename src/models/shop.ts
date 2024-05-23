@@ -5,6 +5,7 @@ import type { ColumnNameMappers } from 'objection'
 import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
 import User from './user.js'
+import ShopStatus from '../types/shopStatus.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
@@ -17,6 +18,7 @@ class Shop extends Model {
     shopPhone!: string
     shopEmail!: string
     shopDescription!: string
+    shopStatus!: ShopStatus
     createdAt!: string
     updatedAt!: string
 
@@ -32,7 +34,8 @@ class Shop extends Model {
             shopAddress: { type: 'string' },
             shopPhone: { type: 'string' },
             shopEmail: { type: 'string' },
-            shopDescription: { type: 'string' }
+            shopDescription: { type: 'string' },
+            ShopStatus: { type: 'string' }
         }
     }
 
