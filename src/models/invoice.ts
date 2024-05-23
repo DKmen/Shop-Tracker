@@ -13,10 +13,10 @@ const knexReadOnly = Knex(readOnlyConfig)
 class Invoice extends Model {
     id!: string
     customerId!: string
-    gst!: number
     shopId!: string
-    totalPriceBeforeTax!: number
-    totalPriceAfterTax!: number
+    totalAmount!: number
+    discount!: number
+    totalAmountAfterDiscount!: number
     createdAt!: string
     updatedAt!: string
 
@@ -28,10 +28,10 @@ class Invoice extends Model {
         properties: {
             id: { type: 'string' },
             customerId: { type: 'string' },
-            gst: { type: 'number' },
             shopId: { type: 'string' },
-            totalPriceBeforeTax: { type: 'number' },
-            totalPriceAfterTax: { type: 'number' }
+            totalAmount: { type: 'number' },
+            discount: { type: 'number' },
+            totalAmountAfterDiscount: { type: 'number' }
         }
     }
 

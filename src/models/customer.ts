@@ -10,9 +10,10 @@ const knexReadOnly = Knex(readOnlyConfig)
 
 class Customer extends Model {
     id!: string
-    name!: string
-    email!: string
-    address!: string
+    customerName!: string
+    customerPhone!: string
+    customerEmail!: string
+    customerAddress!: string
     createdAt!: string
     updatedAt!: string
 
@@ -23,9 +24,10 @@ class Customer extends Model {
         type: 'object',
         properties: {
             id: { type: 'string' },
-            name: { type: 'string' },
-            email: { type: 'string' },
-            address: { type: 'string' }
+            customerName: { type: 'string' },
+            customerPhone: { type: 'string' },
+            customerEmail: { type: 'string' },
+            customerAddress: { type: 'string' }
         }
     }
 

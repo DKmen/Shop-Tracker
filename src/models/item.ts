@@ -12,9 +12,13 @@ const knexReadOnly = Knex(readOnlyConfig)
 class Item extends Model {
     id!: string
     invoiceId!: string
+    productId!: string
     quantity!: number
     sellingPrice!: number
-    productId!: string
+    totalAmount!: number
+    discount!: number
+    gst!: number
+    totalAmountWithGst!: number
     createdAt!: string
     updatedAt!: string
 

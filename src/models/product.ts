@@ -15,6 +15,8 @@ class Product extends Model {
     unitPrice!: number
     sellingPrice!: number
     shopId!: string
+    categoryId!: string
+    quantity!: number
     description!: string
     createdAt!: string
     updatedAt!: string
@@ -30,6 +32,8 @@ class Product extends Model {
             unitPrice: { type: 'number' },
             sellingPrice: { type: 'number' },
             shopId: { type: 'string' },
+            categoryId: { type: 'string' },
+            quantity: { type: 'number' },
             description: { type: 'string' }
         }
     }

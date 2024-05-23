@@ -10,6 +10,8 @@ export async function up(knex: Knex): Promise<void> {
             table.integer('unit_price').notNullable()
             table.integer('selling_price').notNullable()
             table.uuid('shop_id').notNullable().references('id').inTable('shop')
+            table.uuid('category_id').notNullable().references('id').inTable('category')
+            table.float('quantity').nullable().defaultTo(0)
             table.string('description').notNullable()
             table.timestamp('created_at').defaultTo(knex.fn.now())
             table.timestamp('updated_at').defaultTo(knex.fn.now())
