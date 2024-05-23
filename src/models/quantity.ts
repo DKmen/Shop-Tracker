@@ -15,6 +15,7 @@ class Quantity extends Model {
     productId!: string
     quantity!: number
     status!:QuantityStatus
+    expireTime!: string
     createdAt!: string
     updatedAt!: string
 
@@ -27,7 +28,8 @@ class Quantity extends Model {
             id: { type: 'string' },
             productId: { type: 'string' },
             quantity: { type: 'number' },
-            status: { type: 'string' }
+            status: { type: 'string' },
+            expireTime: { type: 'string' }
         }
     }
 

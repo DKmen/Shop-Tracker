@@ -18,6 +18,7 @@ class Product extends Model {
     categoryId!: string
     quantity!: number
     description!: string
+    expireTimeInDays!: number
     createdAt!: string
     updatedAt!: string
 
