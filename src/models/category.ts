@@ -4,47 +4,26 @@ import type { ColumnNameMappers } from 'objection'
 
 import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
-import Product from './product.js'
-import Quantity from './quantity.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
 
-class Expire extends Model {
+class Category extends Model {
     id!: string
-    productId!: string
-    quantityId!: string
+    categoryName!: string
+    description!: string
     createdAt!: string
     updatedAt!: string
 
-    static override tableName = 'expire'
+    static override tableName = 'category'
     static override idColumn = ['id']
 
     static override jsonSchema = {
         type: 'object',
         properties: {
             id: { type: 'string' },
-            productId: { type: 'string' },
-            quantityId: { type: 'string' }
-        }
-    }
-
-    static override relationMappings = {
-        product: {
-            relation: Model.HasOneRelation,
-            modelClass: Product,
-            join: {
-                from: 'expire.product_id',
-                to: 'product.id'
-            }
-        },
-        quantity: {
-            relation: Model.HasOneRelation,
-            modelClass: Quantity,
-            join: {
-                from: 'expire.quantity_id',
-                to: 'quantity.id'
-            }
+            categoryName: { type: 'string' },
+            description: { type: 'string' }
         }
     }
 
@@ -62,7 +41,7 @@ class Expire extends Model {
     }
 }
 
-export const ExpireRW = Expire.bindKnex(knexWrite)
-export const ExpireRO = Expire.bindKnex(knexReadOnly)
+export const CategoryRW = Category.bindKnex(knexWrite)
+export const CategoryRO = Category.bindKnex(knexReadOnly)
 
-export default Expire
+export default Category

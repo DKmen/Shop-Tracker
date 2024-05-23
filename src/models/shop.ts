@@ -13,6 +13,10 @@ class Shop extends Model {
     id!: string
     shopName!: string
     userId!: string
+    shopAddress!: string
+    shopPhone!: string
+    shopEmail!: string
+    shopDescription!: string
     createdAt!: string
     updatedAt!: string
 
@@ -24,7 +28,11 @@ class Shop extends Model {
         properties: {
             id: { type: 'string' },
             shopName: { type: 'string' },
-            userId: { type: 'string' }
+            userId: { type: 'string' },
+            shopAddress: { type: 'string' },
+            shopPhone: { type: 'string' },
+            shopEmail: { type: 'string' },
+            shopDescription: { type: 'string' }
         }
     }
 

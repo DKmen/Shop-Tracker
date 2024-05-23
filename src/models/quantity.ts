@@ -5,6 +5,7 @@ import type { ColumnNameMappers } from 'objection'
 import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
 import Product from './product.js'
+import QuantityStatus from '../types/quantityStatus.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
@@ -13,6 +14,7 @@ class Quantity extends Model {
     id!: string
     productId!: string
     quantity!: number
+    status!:QuantityStatus
     createdAt!: string
     updatedAt!: string
 
@@ -24,7 +26,8 @@ class Quantity extends Model {
         properties: {
             id: { type: 'string' },
             productId: { type: 'string' },
-            quantity: { type: 'number' }
+            quantity: { type: 'number' },
+            status: { type: 'string' }
         }
     }
 
