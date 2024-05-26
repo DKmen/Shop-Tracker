@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../../utils/logger';
-import { BaseError, ResourcesNotFoundError } from '../../../errors';
+import { InvalidParametersError, ResourcesNotFoundError } from '../../../errors';
 import { CategoryRW } from '../../../models/category';
+
+import type { BaseError } from '../../../errors';
 
 interface CategoryUpdateRequestBody {
     name: string;
@@ -25,6 +27,12 @@ const updateCategory = async (req: Request<CategoryUpdateRequestParams, unknown,
     logger.info('Transaction started successfully');
 
     try {
+
+        // check category id is defined
+        if (categoryId === undefined) {
+            throw new InvalidParametersError(['category']);
+        }
+
         // check if category exists
         const category = await CategoryRW.query(trx).findById(categoryId)
         if (category === undefined) {
@@ -34,7 +42,7 @@ const updateCategory = async (req: Request<CategoryUpdateRequestParams, unknown,
         logger.debug({ category });
 
         // update category
-        const updatedCategory = await category.$query(trx).patch({ categoryName, description });
+        const updatedCategory = await category.$query(trx).patchAndFetch({ categoryName, description });
         logger.info('category updated successfully');
         logger.debug({ updatedCategory });
 

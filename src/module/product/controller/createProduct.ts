@@ -7,6 +7,7 @@ import { QuantityRW } from '../../../models/quantity';
 import { formatToDBTimestamp } from '../../../utils/helpers';
 
 import type { BaseError } from '../../../errors';
+import { CategoryRW } from '../../../models/category';
 
 interface ProductCreateRequestBody {
     name: string;
@@ -70,6 +71,14 @@ const createProduct = async (req: Request<unknown, unknown, ProductCreateRequest
             throw new ResourcesNotFoundError(['expireTimeInDays']);
         }
         logger.info('Expire time in days provided');
+
+        // check if category exists
+        const category = await CategoryRW.query(trx).findById(categoryId);
+        if (category === undefined) {
+            throw new ResourcesNotFoundError(['category']);
+        }
+        logger.info('Category exists');
+        logger.debug(category);
 
         // create product
         const product = await ProductRW.query(trx).insert({
