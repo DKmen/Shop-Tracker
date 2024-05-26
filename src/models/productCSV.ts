@@ -4,42 +4,44 @@ import type { ColumnNameMappers } from 'objection'
 
 import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
-import Product from './product.js'
-import QuantityStatus from '../types/quantityStatus.js'
+import Shop from './shop.js'
+import CSVStatus from '../types/csvStatus.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
 
-class Quantity extends Model {
+class ProductCSV extends Model {
     id!: string
-    productId!: string
-    quantity!: number
-    status!:QuantityStatus
-    expireTime!: string
+    name!: string
+    description!: string
+    shopId!: string
+    csvFilePath!: string
+    status!: CSVStatus
     createdAt!: string
     updatedAt!: string
 
-    static override tableName = 'quantity'
+    static override tableName = 'product_csv'
     static override idColumn = ['id']
 
     static override jsonSchema = {
         type: 'object',
         properties: {
             id: { type: 'string' },
-            productId: { type: 'string' },
-            quantity: { type: 'number' },
-            status: { type: 'string' },
-            expireTime: { type: 'string' }
+            name: { type: 'string' },
+            description: { type: 'string' },
+            shopId: { type: 'string' },
+            csvFilePath: { type: 'string' },
+            status: { type: 'string', enum: ['processing', 'completed', 'failed'] }
         }
     }
 
     static override relationMappings = {
-        product: {
+        shop: {
             relation: Model.HasOneRelation,
-            modelClass: Product,
+            modelClass: Shop,
             join: {
-                from: 'quantity.product_id',
-                to: 'product.id'
+                from: 'product_csv.shop_id',
+                to: 'shop.id'
             }
         }
     }
@@ -58,7 +60,7 @@ class Quantity extends Model {
     }
 }
 
-export const QuantityRW = Quantity.bindKnex(knexWrite)
-export const QuantityRO = Quantity.bindKnex(knexReadOnly)
+export const ProductCSVRW = ProductCSV.bindKnex(knexWrite)
+export const ProductCSVRO = ProductCSV.bindKnex(knexReadOnly)
 
-export default Quantity
+export default ProductCSV

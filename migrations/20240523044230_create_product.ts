@@ -13,6 +13,7 @@ export async function up(knex: Knex): Promise<void> {
             table.uuid('category_id').notNullable().references('id').inTable('category')
             table.float('quantity').nullable().defaultTo(0)
             table.string('description').notNullable()
+            table.integer('expire_time_in_days').nullable()
             table.timestamp('created_at').defaultTo(knex.fn.now())
             table.timestamp('updated_at').defaultTo(knex.fn.now())
         })
