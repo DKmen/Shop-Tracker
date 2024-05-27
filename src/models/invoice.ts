@@ -6,6 +6,7 @@ import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
 import Customer from './customer.js'
 import Shop from './shop.js'
+import Item from './item.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
@@ -50,6 +51,14 @@ class Invoice extends Model {
             join: {
                 from: 'invoice.shop_id',
                 to: 'shop.id'
+            }
+        },
+        items:{
+            relation: Model.HasManyRelation,
+            modelClass: Item,
+            join: {
+                from: 'invoice.id',
+                to: 'item.invoice_id'
             }
         }
     }

@@ -4,7 +4,6 @@ import type { ColumnNameMappers } from 'objection'
 
 import { formatToDBTimestamp } from '../utils/helpers.js'
 import { writeConfig, readOnlyConfig } from '../../knexfile.js'
-import Invoice from './invoice.js'
 
 const knexWrite = Knex(writeConfig)
 const knexReadOnly = Knex(readOnlyConfig)
@@ -36,16 +35,16 @@ class Item extends Model {
         }
     }
 
-    static override relationMappings = {
-        invoice: {
-            relation: Model.HasOneRelation,
-            modelClass: Invoice,
-            join: {
-                from: 'item.invoice_id',
-                to: 'invoice.id'
-            }
-        },
-    }
+    // static override relationMappings = {
+    //     invoice: {
+    //         relation: Model.HasOneRelation,
+    //         modelClass: Invoice,
+    //         join: {
+    //             from: 'item.invoice_id',
+    //             to: 'invoice.id'
+    //         }
+    //     },
+    // }
 
     override $beforeInsert(): void {
         this.createdAt = formatToDBTimestamp(new Date())
