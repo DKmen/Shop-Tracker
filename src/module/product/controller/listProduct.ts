@@ -10,6 +10,7 @@ interface ProductListRequestQuery {
     offset: string;
     limit: string;
     categoryId?: string;
+    status?: string;
 }
 
 const listProduct = async (req: Request<unknown, unknown, unknown, ProductListRequestQuery>, res: Response) => {
