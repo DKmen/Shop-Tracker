@@ -1,1 +1,0 @@
-// create invatory report and save it to S3

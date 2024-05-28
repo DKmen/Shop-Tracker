@@ -1,8 +1,16 @@
 import AWS from 'aws-sdk';
 import { lookup } from 'mime-types';
 import { logger } from '../utils/logger';
+import ReportType from '../types/reportType';
 
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
+interface SQSMessage {
+    reportType: ReportType;
+    shopId: string;
+    startDate: string;
+    endDate: string;
+}
+
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME, AWS_SQS_URL = '' } = process.env;
 
 AWS.config.update({
     accessKeyId: AWS_ACCESS_KEY_ID,
@@ -29,4 +37,20 @@ export const preSignUrl = async (key: string) => {
     logger.debug(url)
 
     return url;
+}
+
+export const pushSQSMessage = async (message: SQSMessage) => {
+    logger.info('Pushing message to SQS queue...')
+    logger.debug(message)
+
+    const sqs = new AWS.SQS();
+    const params: AWS.SQS.SendMessageRequest = {
+        MessageBody: JSON.stringify(message),
+        QueueUrl: AWS_SQS_URL
+    };
+
+    const queueMessage = await sqs.sendMessage(params).promise();
+    logger.info('Message pushed to SQS queue successfully')
+
+    return queueMessage;
 }
